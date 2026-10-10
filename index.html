@@ -51,7 +51,7 @@
                     <img src="boss.jpg" alt="قالب تهنئة للمدير " class="w-full h-full object-contain">
                 </div>
                 <h3 class="font-bold text-sm text-[#1f160e] mb-3">قالب تهنئة للمدير </h3>
-                <!-- لاحظ هنا تم تمرير لون النص -->
+                <!-- لون النص الممرر -->
                 <button onclick="selectTemplate('boss.jpg', '#30261b')" class="w-full bg-[#b58d43] hover:bg-[#9c7634] text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
                     اختر هذا القالب
                 </button>
@@ -70,11 +70,11 @@
                     <svg id="card-svg" viewBox="0 0 640 1136" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
                         <image id="svg-template-img" href="" width="640" height="1136" x="0" y="0" preserveAspectRatio="xMidYMid meet" crossorigin="anonymous"/>
                         
-                        <!-- النص الأول: اسم المدير (x=320 منتصف، y=900 الارتفاع) -->
-                        <text id="svg-boss-name" x="137" y="900" text-anchor="middle" fill="" font-size="19" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب اسم مديرك</text>
+                        <!-- النص الأول: اسم المدير (محاذاة لليمين باستخدام text-anchor="end") -->
+                        <text id="svg-boss-name" x="450" y="900" text-anchor="end" fill="" font-size="19" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب اسم مديرك</text>
                         
-                        <!-- النص الثاني: اسم المرسل/اسمك (x=320 منتصف، y=1000 الارتفاع) -->
-                        <text id="svg-sender-name" x="200" y="500" text-anchor="middle" fill="" font-size="19" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب اسمك</text>
+                        <!-- النص الثاني: اسمك (محاذاة لليمين باستخدام text-anchor="end") -->
+                        <text id="svg-sender-name" x="450" y="940" text-anchor="end" fill="" font-size="19" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب اسمك</text>
                     </svg>
                 </div>
             </div>
@@ -101,15 +101,11 @@
                     <input type="text" id="boss-input" value="اكتب اسم مديرك" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
                 </div>
 
-        
-
                 <!-- حقل اسمك (المرسل) -->
                 <div class="mb-4">
                     <label for="sender-input" class="block text-xs font-bold text-gray-700 mb-1">اسمك (المرسل)</label>
                     <input type="text" id="sender-input" value="اكتب اسمك" class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
                 </div>
-
-
             </div>
 
             <!-- زر التجهيز والانتقال لصفحة الحفظ -->
@@ -156,13 +152,9 @@
         
         const bossInput = document.getElementById('boss-input');
         const svgBossName = document.getElementById('svg-boss-name');
-        const bossFontSize = document.getElementById('boss-font-size');
-        const valBossSize = document.getElementById('val-boss-size');
 
         const senderInput = document.getElementById('sender-input');
         const svgSenderName = document.getElementById('svg-sender-name');
-        const senderFontSize = document.getElementById('sender-font-size');
-        const valSenderSize = document.getElementById('val-sender-size');
         
         const btnBackToGallery = document.getElementById('btn-back-to-gallery');
         const btnGenerate = document.getElementById('btn-generate');
@@ -170,22 +162,27 @@
         const finalCardImg = document.getElementById('final-card-img');
 
         let currentSelectedTemplatePath = '';
-        let currentSelectedTemplateColor = '#b58d43'; 
+        let currentSelectedTemplateColor = '#30261b'; 
 
-        // إحداثيات الارتفاع الثابتة للنصين على الصورة (يمكنك تعديلها من هنا حسب مقاسات صورتك)
-        const BOSS_Y = 900;   // ارتفاع اسم المدير
-        const SENDER_Y = 927; // ارتفاع اسمك
+        // إحداثيات الإحداث والارتفاع للنصين (محاذاة يمين عند X=450)
+        const BOSS_X = 450;
+        const BOSS_Y = 900; 
+
+        const SENDER_X = 450;
+        const SENDER_Y = 940;
 
         function selectTemplate(imgName, textColor) {
             currentSelectedTemplatePath = imgName;
-            currentSelectedTemplateColor = textColor || '#b58d43'; 
+            currentSelectedTemplateColor = textColor || '#30261b'; 
             
             svgTemplateImg.setAttribute('href', imgName);
             
             svgBossName.setAttribute('fill', currentSelectedTemplateColor);
+            svgBossName.setAttribute('x', BOSS_X);
             svgBossName.setAttribute('y', BOSS_Y);
 
             svgSenderName.setAttribute('fill', currentSelectedTemplateColor);
+            svgSenderName.setAttribute('x', SENDER_X);
             svgSenderName.setAttribute('y', SENDER_Y);
             
             galleryScreen.classList.add('hidden');
@@ -202,21 +199,9 @@
             svgBossName.textContent = bossInput.value.trim() || "اكتب اسم مديرك";
         });
 
-        bossFontSize.addEventListener('input', (e) => {
-            const sizeValue = e.target.value;
-            svgBossName.setAttribute('font-size', sizeValue);
-            valBossSize.textContent = sizeValue + 'px';
-        });
-
         // ربط مدخل اسمك بالمعاينة الحية
         senderInput.addEventListener('input', () => {
             svgSenderName.textContent = senderInput.value.trim() || "اكتب اسمك";
-        });
-
-        senderFontSize.addEventListener('input', (e) => {
-            const sizeValue = e.target.value;
-            svgSenderName.setAttribute('font-size', sizeValue);
-            valSenderSize.textContent = sizeValue + 'px';
         });
 
         btnBackToDesign.addEventListener('click', () => {
@@ -237,20 +222,18 @@
 
             bgImg.onload = () => {
                 context.drawImage(bgImg, 0, 0, 640, 1136);
-                context.textAlign = 'center';
+                context.textAlign = 'right'; // محاذاة النص لليمين في الكانفاس
                 context.fillStyle = currentSelectedTemplateColor;
 
                 // 1. رسم اسم المدير
-                const bossSize = bossFontSize.value;
                 const bossText = bossInput.value.trim() || "اكتب اسم مديرك";
-                context.font = `900 ${bossSize}px 'MyCustomFont', 'Cairo', sans-serif`;
-                context.fillText(bossText, 320, BOSS_Y);
+                context.font = `900 19px 'MyCustomFont', 'Cairo', sans-serif`;
+                context.fillText(bossText, BOSS_X, BOSS_Y);
 
                 // 2. رسم اسم المرسل (اسمك)
-                const senderSize = senderFontSize.value;
                 const senderText = senderInput.value.trim() || "اكتب اسمك";
-                context.font = `900 ${senderSize}px 'MyCustomFont', 'Cairo', sans-serif`;
-                context.fillText(senderText, 320, SENDER_Y);
+                context.font = `900 19px 'MyCustomFont', 'Cairo', sans-serif`;
+                context.fillText(senderText, SENDER_X, SENDER_Y);
 
                 // تحويل لنتيجة نهائية وعرضها
                 const renderedDataUrl = canvas.toDataURL('image/png');
