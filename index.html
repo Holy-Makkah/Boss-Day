@@ -11,7 +11,7 @@
         /* تعريف ملف الخط الخاص بك */
         @font-face {
             font-family: 'MyCustomFont';
-            src: url('LyonArabicDisplay-Regular-App.ttf') format('truetype'); /* أكتب هنا اسم ملف خطك المرفق في مجلدك وامتداده بدقة */
+            src: url('LyonArabicDisplay-Light-App.ttf') format('truetype'); /* أكتب هنا اسم ملف خطك المرفق في مجلدك وامتداده بدقة */
         }
 
         body {
@@ -105,14 +105,29 @@
                 <!-- حقل الإدخال -->
                 <div class="mb-6">
                     <label for="name-input" class="block text-xs font-bold text-gray-700 mb-1">الاسم</label>
-                    <input type="text" id="name-input" value="اكتب الاسم هنا" placeholder="اكتب الاسم هنا..." class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
+                    <input type="text" id="name-input" value="اكتب اسم مديرك" placeholder="اكتب الاسم هنا..." class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
                 </div>
 
                 <!-- التحكم في حجم الخط -->
                 <div class="mb-6">
                     <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
                         <label for="font-size">حجم خط الاسم</label>
-                        <span id="val-size" class="text-amber-800">52px</span>
+                        <span id="val-size" class="text-amber-800">22px</span>
+                    </div>
+                    <input type="range" id="font-size" min="20" max="110" value="52" class="w-full accent-amber-700">
+                </div>
+
+                 <!-- حقل الإدخال -->
+                <div class="mb-6">
+                    <label for="name-input" class="block text-xs font-bold text-gray-700 mb-1">الاسم</label>
+                    <input type="text" id="name-input" value="اكتب اسمك" placeholder="اسمك..." class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
+                </div>
+
+                <!-- التحكم في حجم الخط -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                        <label for="font-size">حجم خط الاسم</label>
+                        <span id="val-size" class="text-amber-800">22px</span>
                     </div>
                     <input type="range" id="font-size" min="20" max="110" value="52" class="w-full accent-amber-700">
                 </div>
@@ -140,7 +155,7 @@
 
             <!-- هنا ستظهر الصورة المدمجة والنهائية كملف صورة عادي -->
             <div class="relative w-full max-w-[280px] mx-auto rounded-2xl overflow-hidden shadow-lg border border-gray-200 mb-6">
-                <img id="final-card-img" src="" alt="بطاقة التخرج المخصصة" class="w-full h-auto block select-none">
+                <img id="final-card-img" src="" alt="بطاقة تهنئة المدير" class="w-full h-auto block select-none">
             </div>
 
             <!-- أزرار التحكم بالرجوع -->
