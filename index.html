@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صانع بطاقات التهنئة</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+        
+        /* تعريف ملف الخط الخاص بك */
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('LyonArabicDisplay-Regular-App.ttf') format('truetype'); /* أكتب هنا اسم ملف خطك المرفق في مجلدك وامتداده بدقة */
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #e6ded4; 
+        }
+        .preview-card, .template-card {
+            background: #fffdf9;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            transition: all 0.3s ease;
+        }
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px rgba(181, 141, 67, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start p-4 md:p-8">
+
+    <!-- ================== الهيدر المشترك ================== -->
+    <header class="w-full max-w-4xl flex justify-center mb-6 pt-2">
+        <img src="logo.png" alt="شعار الموقع" class="h-8 w-auto object-contain opacity-90 transition-opacity hover:opacity-100">
+    </header>
+
+    <!-- ================== الشاشة الأولى: معرض اختيار القوالب ================== -->
+    <div id="gallery-screen" class="w-full max-w-4xl my-auto text-center py-6">
+        <h1 class="text-3xl md:text-4xl font-black text-[#1f160e] mt-2 mb-2">اختر قالب التهنئة</h1>
+        <p class="text-xs md:text-sm text-gray-600 mb-8 max-w-md mx-auto leading-relaxed">
+            مجموعة متميزة من بطاقات التهنئة الجاهزة، اختر التصميم الذي يعجبك لتبدأ في كتابة الاسم.
+        </p>
+
+        <!-- شبكة القوالب المصغرة -->
+        <div class="flex flex-wrap justify-center gap-6 px-4">            
+            <!-- القالب الأول (تم تمرير الارتفاع المناسب 580 كمتغير ثالث) -->
+            <div class="template-card p-4 border border-white/40 flex flex-col items-center">
+                <div class="w-full aspect-[9/16] h-[340px] rounded-xl overflow-hidden bg-slate-900/10 mb-4 border border-gray-100 flex items-center justify-center">
+                    <img src="grad1.jpg" alt="قالب تهنئة التخرج " class="w-full h-full object-contain">
+                </div>
+                <h3 class="font-bold text-sm text-[#1f160e] mb-3">قالب تهنئة التخرج </h3>
+                <button onclick="selectTemplate('grad1.jpg', '#fad47a', 850)" class="w-full bg-[#b58d43] hover:bg-[#9c7634] text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
+                    اختر هذا القالب
+                </button>
+            </div>
+
+            <!-- القالب الثاني (تم تمرير الارتفاع المناسب 720 كمتغير ثالث كمثال - غيره للارتفاع الذي تراه مناسباً لقالبك) -->
+            <div class="template-card p-4 border border-white/40 flex flex-col items-center">
+                <div class="w-full aspect-[9/16] h-[340px] rounded-xl overflow-hidden bg-slate-900/10 mb-4 border border-gray-100 flex items-center justify-center">
+                    <img src="grad2.jpg" alt="قالب تهنئة النجاح" class="w-full h-full object-contain">
+                </div>
+                <h3 class="font-bold text-sm text-[#1f160e] mb-3">قالب تهنئة النجاح</h3>
+                <button onclick="selectTemplate('grad2.jpg', '#e2a040', 680)" class="w-full bg-[#b58d43] hover:bg-[#9c7634] text-white text-xs font-bold py-2.5 rounded-xl transition shadow-md">
+                    اختر هذا القالب
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================== الشاشة الثانية: شاشة التصميم والتعديل ================== -->
+    <div id="design-screen" class="w-full max-w-5xl flex flex-col lg:flex-row gap-6 items-center lg:items-stretch justify-center my-auto hidden">
+        
+        <!-- القسم الأيسر: المعاينة الحية -->
+        <div class="w-full max-w-[340px] flex flex-col items-center">
+            <div class="preview-card p-3 w-full border border-white/40">
+                <div id="card-container" class="relative w-full aspect-[9/16] rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white">                    
+                    <svg id="card-svg" viewBox="0 0 640 1136" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
+                        <image id="svg-template-img" href="" width="640" height="1136" x="0" y="0" preserveAspectRatio="xMidYMid meet" crossorigin="anonymous"/>
+                        <!-- يتم ملء fill وإحداثي الـ y تلقائياً بالقيم الممررة من القالب المختار -->
+                        <text id="svg-name-target" x="320" y="580" text-anchor="middle" fill="" font-size="52" font-style="normal" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب الاسم هنا</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الأيمن: لوحة التحكم بالتصميم -->
+        <div class="w-full max-w-[400px] bg-[#fffdf9]/95 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-white/60 flex flex-col justify-between">
+            <div>
+                <button id="btn-back-to-gallery" class="text-xs font-bold text-amber-700 bg-amber-100 hover:bg-amber-200 px-3 py-1.5 rounded-full w-max block mb-4 transition">
+                    ← العودة لاختيار قالب آخر
+                </button>
+                
+                <h1 class="text-2xl font-black text-[#1f160e] leading-tight mb-2">
+                    اكتب الاسم واضبط حجمه
+                </h1>
+                
+                <p class="text-xs text-gray-600 mb-6 leading-relaxed">
+                    اكتب الاسم بالأسفل ليتوسط بطاقة التهنئة تلقائياً بالخط المخصص، ثم حدد الحجم المناسب للخط.
+                </p>
+                
+                <!-- حقل الإدخال -->
+                <div class="mb-6">
+                    <label for="name-input" class="block text-xs font-bold text-gray-700 mb-1">الاسم</label>
+                    <input type="text" id="name-input" value="اكتب الاسم هنا" placeholder="اكتب الاسم هنا..." class="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-600 text-sm font-medium transition">
+                </div>
+
+                <!-- التحكم في حجم الخط -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-xs font-bold text-gray-700 mb-1">
+                        <label for="font-size">حجم خط الاسم</label>
+                        <span id="val-size" class="text-amber-800">52px</span>
+                    </div>
+                    <input type="range" id="font-size" min="20" max="110" value="52" class="w-full accent-amber-700">
+                </div>
+            </div>
+
+            <!-- زر التجهيز والانتقال لصفحة الحفظ -->
+            <div class="space-y-2 mt-2">
+                <button id="btn-generate" class="w-full bg-[#b58d43] hover:bg-[#9c7634] text-white text-sm font-bold py-4 rounded-xl transition shadow-md flex items-center justify-center gap-2">
+                    تجهيز البطاقة للحفظ
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================== الشاشة الثالثة: شاشة الحفظ الفوري ================== -->
+    <div id="save-screen" class="w-full max-w-md flex flex-col items-center justify-center my-auto hidden">
+        <div class="bg-[#fffdf9] rounded-3xl p-6 shadow-2xl border border-white/60 w-full text-center">
+            
+            <span class="text-3xl">🎉</span>
+            <h2 class="text-xl font-black text-[#1f160e] mt-2 mb-1">تمت صناعة بطاقتك بنجاح!</h2>
+            <p class="text-xs text-emerald-700 font-bold mb-4 bg-emerald-50 py-1.5 px-3 rounded-full inline-block">
+                📱 اضغط مطولاً على الصورة بالأسفل لحفظها في جهازك
+            </p>
+
+            <!-- هنا ستظهر الصورة المدمجة والنهائية كملف صورة عادي -->
+            <div class="relative w-full max-w-[280px] mx-auto rounded-2xl overflow-hidden shadow-lg border border-gray-200 mb-6">
+                <img id="final-card-img" src="" alt="بطاقة التخرج المخصصة" class="w-full h-auto block select-none">
+            </div>
+
+            <!-- أزرار التحكم بالرجوع -->
+            <div class="space-y-2">
+                <button id="btn-back-to-design" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold py-3 rounded-xl transition">
+                    ← العودة وتعديل الاسم
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- جافا سكريبت التفاعلية لإدارة الصفحات والتنقل بينها -->
+    <script>
+        const galleryScreen = document.getElementById('gallery-screen');
+        const designScreen = document.getElementById('design-screen');
+        const saveScreen = document.getElementById('save-screen');
+        
+        const svgTemplateImg = document.getElementById('svg-template-img');
+        const nameInput = document.getElementById('name-input');
+        const svgNameTarget = document.getElementById('svg-name-target');
+        const fontSize = document.getElementById('font-size');
+        const valSize = document.getElementById('val-size');
+        
+        const btnBackToGallery = document.getElementById('btn-back-to-gallery');
+        const btnGenerate = document.getElementById('btn-generate');
+        const btnBackToDesign = document.getElementById('btn-back-to-design');
+        const finalCardImg = document.getElementById('final-card-img');
+
+        let currentSelectedTemplatePath = '';
+        let currentSelectedTemplateColor = '#b58d43'; 
+        let currentSelectedTemplateY = 580; // متغير عام لحفظ إحداثي الارتفاع النشط حالياً مع القالب المختار
+
+        // [تعديل] دالة اختيار القالب تستقبل الآن إحداثي الارتفاع textY أيضاً
+        function selectTemplate(imgName, textColor, textY) {
+            currentSelectedTemplatePath = imgName;
+            currentSelectedTemplateColor = textColor || '#b58d43'; 
+            currentSelectedTemplateY = textY || 580; // تعيين القيمة الممررة أو 580 كقيمة افتراضية
+            
+            svgTemplateImg.setAttribute('href', imgName);
+            svgNameTarget.setAttribute('fill', currentSelectedTemplateColor); 
+            svgNameTarget.setAttribute('y', currentSelectedTemplateY); // تطبيق الارتفاع على المعاينة الحية
+            
+            galleryScreen.classList.add('hidden');
+            designScreen.classList.remove('hidden');
+        }
+
+        btnBackToGallery.addEventListener('click', () => {
+            designScreen.classList.add('hidden');
+            galleryScreen.classList.remove('hidden');
+        });
+
+        nameInput.addEventListener('input', () => {
+            svgNameTarget.textContent = nameInput.value.trim() || "اكتب هنا الاسم";
+        });
+
+        fontSize.addEventListener('input', (e) => {
+            const sizeValue = e.target.value;
+            svgNameTarget.setAttribute('font-size', sizeValue);
+            valSize.textContent = sizeValue + 'px';
+        });
+
+        btnBackToDesign.addEventListener('click', () => {
+            saveScreen.classList.add('hidden');
+            designScreen.classList.remove('hidden');
+        });
+
+        btnGenerate.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = 640;
+            canvas.height = 1136;
+            const context = canvas.getContext('2d');
+
+            const bgImg = new Image();
+            bgImg.crossOrigin = 'anonymous'; 
+            bgImg.src = currentSelectedTemplatePath; 
+
+            bgImg.onload = () => {
+                context.drawImage(bgImg, 0, 0, 640, 1136);
+
+                const size = fontSize.value;
+                const text = nameInput.value.trim() || "اكتب الاسم هنا";
+
+                // [تعديل] رسم الخط بالاعتماد على إحداثي الارتفاع المخصص للقالب النشط حالياً
+                context.font = `900 ${size}px 'MyCustomFont', 'Cairo', sans-serif`;
+                context.textAlign = 'center';
+                
+                context.fillStyle = currentSelectedTemplateColor;
+                context.fillText(text, 320, currentSelectedTemplateY);
+
+                const renderedDataUrl = canvas.toDataURL('image/png');
+                finalCardImg.src = renderedDataUrl;
+
+                designScreen.classList.add('hidden');
+                saveScreen.classList.remove('hidden');
+            };
+
+            bgImg.onerror = () => {
+                alert(`عذراً، تعذر العثور على ملف الصورة باسم ${currentSelectedTemplatePath} في مجلد المشروع. يرجى التأكد من رفع جميع القوالب في GitHub.`);
+            };
+        });
+    </script>
+</body>
+</html>
