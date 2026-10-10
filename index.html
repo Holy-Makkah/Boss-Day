@@ -81,7 +81,7 @@
                     <svg id="card-svg" viewBox="0 0 640 1136" class="w-full h-auto block" xmlns="http://www.w3.org/2000/svg">
                         <image id="svg-template-img" href="" width="640" height="1136" x="0" y="0" preserveAspectRatio="xMidYMid meet" crossorigin="anonymous"/>
                         <!-- يتم ملء fill وإحداثي الـ y تلقائياً بالقيم الممررة من القالب المختار -->
-                        <text id="svg-name-target" x="200" y="600" text-anchor="middle" fill="" font-size="22" font-style="normal" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب الاسم هنا</text>
+                        <text id="svg-name-target" x="140" y="1000" text-anchor="middle" fill="" font-size="22" font-style="normal" style="font-family: 'MyCustomFont', 'Cairo', sans-serif;" font-weight="900">اكتب الاسم هنا</text>
                     </svg>
                 </div>
             </div>
@@ -186,13 +186,13 @@
 
         let currentSelectedTemplatePath = '';
         let currentSelectedTemplateColor = '#b58d43'; 
-        let currentSelectedTemplateY = 580; // متغير عام لحفظ إحداثي الارتفاع النشط حالياً مع القالب المختار
+        let currentSelectedTemplateY = 1000; // متغير عام لحفظ إحداثي الارتفاع النشط حالياً مع القالب المختار
 
         // [تعديل] دالة اختيار القالب تستقبل الآن إحداثي الارتفاع textY أيضاً
         function selectTemplate(imgName, textColor, textY) {
             currentSelectedTemplatePath = imgName;
             currentSelectedTemplateColor = textColor || '#b58d43'; 
-            currentSelectedTemplateY = textY || 580; // تعيين القيمة الممررة أو 580 كقيمة افتراضية
+            currentSelectedTemplateY = textY ; // تعيين القيمة الممررة أو 580 كقيمة افتراضية
             
             svgTemplateImg.setAttribute('href', imgName);
             svgNameTarget.setAttribute('fill', currentSelectedTemplateColor); 
